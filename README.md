@@ -57,3 +57,20 @@ buyer who already pays, and math that checks out.
 - **Keputusan jatah:** probe 1 dari 20/hari (maks 40 total), Force Last — entry
   ini yang terkunci bila tidak ada iterasi yang lebih kuat sebelum deadline
   07:38 WIB.
+
+## Revisi main.ts
+
+In the recorded revision session, `main.ts` was restructured without touching
+the plan text itself:
+
+- **Sentences as data.** The plan is built from a `sentences` array joined with
+  single spaces, so each claim stays readable and editable on its own line
+  while the output stays byte-identical (279 code points, within the 1–280
+  gate).
+- **Post-write validation.** After writing `entry.txt`, the file is read back
+  and its length counted in Unicode code points; the error message now states
+  the actual count and the 1–280 limit, so a gate failure is immediately
+  diagnosable instead of a silent wrong-length entry.
+- **`resolveOutDir` helper.** The output directory comes from the harness-set
+  `MAKEFUN_OUTPUT_DIR` (trimmed, so stray whitespace cannot create a bogus
+  path), falling back to the conventional `/output` directory.
